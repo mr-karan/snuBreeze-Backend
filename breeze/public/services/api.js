@@ -1,7 +1,9 @@
 var mongoose     = require('mongoose');
+var bcrypt = require('bcryptjs');
+
 var Schema       = mongoose.Schema;
 
-var EventSchema   = new Schema({
+var eventSchema   = new Schema({
 	name: String
 });
 var userSchema = new mongoose.Schema({
@@ -39,7 +41,6 @@ userSchema.methods.comparePassword = function(candidatePassword, cb) {
 };
 
 var User = mongoose.model('User', userSchema);
-var Show = mongoose.model('Show', showSchema);
+var Event = mongoose.model('Event', eventSchema);
 
-
-module.exports = mongoose.model('Event', EventSchema);
+module.exports = mongoose.model('Event', eventSchema);
