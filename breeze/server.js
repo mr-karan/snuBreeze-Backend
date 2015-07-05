@@ -9,7 +9,7 @@ app.use(bodyParser.json());
 var port     = process.env.PORT || 8080; // set our port
 var mongoose   = require('mongoose');
 mongoose.connect('localhost'); // connect to our database
-var Event     = require('public/services/api');
+var Event     = require('public/services/Event');
 var router = express.Router();
 
 // middleware to use for all requests
