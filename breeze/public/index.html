@@ -1,21 +1,47 @@
 <!doctype html>
-<html ng-app="Instagram">
+<html ng-app="breeze">
 <head>
   <meta charset="utf-8">
   <meta http-equiv="X-UA-Compatible" content="IE=edge">
   <meta name="viewport" content="width=device-width, initial-scale=1">
-  <title>Instagram - Powered by Satellizer</title>
-  <link rel="stylesheet" href="//maxcdn.bootstrapcdn.com/bootswatch/3.3.0/paper/bootstrap.min.css">
-  <link rel="stylesheet" href="//code.ionicframework.com/ionicons/1.5.2/css/ionicons.min.css">
-  <link rel="stylesheet" href="css/styles.css">
+  <title>Breeze 2015 - Shiv Nadar University</title>
+  <link rel="stylesheet" href="http://maxcdn.bootstrapcdn.com/bootswatch/3.3.0/paper/bootstrap.min.css">
+  <link rel="stylesheet" href="http://code.ionicframework.com/ionicons/1.5.2/css/ionicons.min.css">
+  <link rel="stylesheet" href="css/style.css">
 </head>
 <body>
+<nav class="navbar navbar-inverse ">
+  <div class="container">
+    <div class="navbar-header">
+      <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#bs-example-navbar-collapse-2">
+        <span class="sr-only">Toggle navigation</span>
+        <span class="icon-bar"></span>
+        <span class="icon-bar"></span>
+        <span class="icon-bar"></span>
+      </button>
+      <a class="navbar-brand" href="#">Breeze 2015</a>
+    </div>
+
+    <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-2">
+      <ul class="nav navbar-nav">
+        <li class="active"><a href="#">Login<span class="sr-only">(current)</span></a></li>
+        <li><a href="#">Logout</a></li>
+    
+      </ul>
+  
+      <ul class="nav navbar-nav navbar-right">
+        <li><a href="#">Home</a></li>
+      </ul>
+    </div>
+  </div>
+</nav>
+
 
 <div ng-view></div>
-
 <script src="vendor/angular.js"></script>
 <script src="vendor/angular-route.js"></script>
 <script src="vendor/angular-messages.js"></script>
+
 <script src="app.js"></script>
 
 </body>

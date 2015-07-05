@@ -3,4 +3,8 @@
 *
 * 
 */
-angular.module('', []).
+angular.module('breeze', ['ngMessages','ngRoute'])
+	.config(function($routeProvider) {
+		
+	});
+	
