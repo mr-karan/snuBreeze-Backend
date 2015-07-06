@@ -8,11 +8,7 @@ var Schema       = mongoose.Schema;
 
 // define schemas
 var eventSchema   = new Schema({
-<<<<<<< HEAD
-	name: String
-=======
   name: String
->>>>>>> f04de33304e9833b4bb746a2821226d25f665dd7
 });
 var userSchema = new Schema({
   name: { type: String, trim: true, required: true },
