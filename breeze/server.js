@@ -6,8 +6,10 @@ var crypto = require('crypto');
 var bcrypt = require('bcryptjs');
 var mongoose = require('mongoose');
 var jwt = require('jwt-simple');
+var moment = require('moment');
 var async = require('async');
 var request = require('request');
+var tokenSecret = 'breezeToken';
 
 var Schema       = mongoose.Schema;
 

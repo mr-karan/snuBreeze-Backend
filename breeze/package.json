@@ -24,7 +24,9 @@
     "async": "^0.8.0",
     "jwt-simple": "^0.2.0",
     "method-override": "^1.0.0",
-    "request": "^2.34.0"
+    "request": "^2.34.0",
+    "moment": "^2.7.0"
+
   }
 }
 
