@@ -8,7 +8,11 @@ var Schema       = mongoose.Schema;
 
 // define schemas
 var eventSchema   = new Schema({
+<<<<<<< HEAD
 	name: String
+=======
+  name: String
+>>>>>>> f04de33304e9833b4bb746a2821226d25f665dd7
 });
 var userSchema = new Schema({
   name: { type: String, trim: true, required: true },
@@ -57,85 +61,85 @@ app.set('port', process.env.PORT);
 
 // middleware to use for all requests
 router.use(function(req, res, next) {
-	// do logging
-	console.log('Breeze 2015 API');
-	next();
+  // do logging
+  console.log('Breeze 2015 API');
+  next();
 });
 
 router.get('/', function(req, res) {
-	res.json({ message: 'Home!' });	
+  res.json({ message: 'Home!' }); 
 });
 
 router.route('/events')
 
-	// add an event (accessed at POST http://localhost:8080/events)
-	.post(function(req, res) {
-		
-		var event = new Event();		// create a new instance of the Event model
-		event.name = req.body.name;  // set the event name (comes from the request)
+  // add an event (accessed at POST http://localhost:8080/events)
+  .post(function(req, res) {
+    
+    var event = new Event();    // create a new instance of the Event model
+    event.name = req.body.name;  // set the event name (comes from the request)
                                 //configure angular to choose from dropdown menu
-		event.save(function(err) {
-			if (err)
-				res.send(err);
+    event.save(function(err) {
+      if (err)
+        res.send(err);
 
-			res.json({ message: 'Event Added!' });
-		});
+      res.json({ message: 'Event Added!' });
+    });
 
-		
-	})
+    
+  })
 
-	// get all the events (accessed at GET http://localhost:8080/api/events)
-	.get(function(req, res) {
-		Event.find(function(err, events) {
-			if (err)
-				res.send(err);
+  // get all the events (accessed at GET http://localhost:8080/api/events)
+  .get(function(req, res) {
+    Event.find(function(err, events) {
+      if (err)
+        res.send(err);
 
-			res.json(events);
-		});
-	});
+      res.json(events);
+    });
+  });
 
 // on routes that end in /events/:event_id
 // ----------------------------------------------------
 router.route('/events/:event_id')
 
-	// get the event with that id
-	.get(function(req, res) {
-		Event.findById(req.params.event_id, function(err, event) {
-			if (err)
-				res.send(err);
-			res.json(event);
-		});
-	})
+  // get the event with that id
+  .get(function(req, res) {
+    Event.findById(req.params.event_id, function(err, event) {
+      if (err)
+        res.send(err);
+      res.json(event);
+    });
+  })
 
-	// update the event with this id
-	.put(function(req, res) {
-		Event.findById(req.params.event_id, function(err, event) {
+  // update the event with this id
+  .put(function(req, res) {
+    Event.findById(req.params.event_id, function(err, event) {
 
-			if (err)
-				res.send(err);
+      if (err)
+        res.send(err);
 
-			event.name = req.body.name;
-			event.save(function(err) {
-				if (err)
-					res.send(err);
+      event.name = req.body.name;
+      event.save(function(err) {
+        if (err)
+          res.send(err);
 
-				res.json({ message: 'Event updated!' });
-			});
+        res.json({ message: 'Event updated!' });
+      });
 
-		});
-	})
+    });
+  })
 
-	// delete the event with this id
-	.delete(function(req, res) {
-		Event.remove({
-			_id: req.params.event_id
-		}, function(err, event) {
-			if (err)
-				res.send(err);
+  // delete the event with this id
+  .delete(function(req, res) {
+    Event.remove({
+      _id: req.params.event_id
+    }, function(err, event) {
+      if (err)
+        res.send(err);
 
-			res.json({ message: 'Successfully deleted' });
-		});
-	});
+      res.json({ message: 'Successfully deleted' });
+    });
+  });
 
 
 // REGISTER OUR ROUTES
