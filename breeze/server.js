@@ -1,9 +1,14 @@
-// require all
-var express    = require('express');
+var path = require('path');
+var express = require('express');
 var bodyParser = require('body-parser');
-var morgan     = require('morgan');
-var mongoose     = require('mongoose');
+var logger = require('morgan');
+var crypto = require('crypto');
 var bcrypt = require('bcryptjs');
+var mongoose = require('mongoose');
+var jwt = require('jwt-simple');
+var async = require('async');
+var request = require('request');
+
 var Schema       = mongoose.Schema;
 
 // define schemas
@@ -45,34 +50,155 @@ userSchema.methods.comparePassword = function(candidatePassword, cb) {
 var User = mongoose.model('User', userSchema);
 var Event = mongoose.model('Event', eventSchema);
 mongoose.connect('mongodb://karan:breeze@ds047732.mongolab.com:47732/breeze'); // connect to our database
+var app = express();
 
-var port     = process.env.PORT; // set our port
-var app        = express();
-var router = express.Router();
-
-app.use(morgan('dev')); // log requests to the console
-app.use(bodyParser.urlencoded({ extended: true }));
+app.set('port', process.env.PORT || 8080);
+app.use(logger('dev'));
 app.use(bodyParser.json());
-app.set('port', process.env.PORT);
+app.use(bodyParser.urlencoded({ extended: true }));
+app.use(express.static(path.join(__dirname, 'public')));
 
-// middleware to use for all requests
-router.use(function(req, res, next) {
-  // do logging
-  console.log('Breeze 2015 API');
-  next();
+function ensureAuthenticated(req, res, next) {
+  if (req.headers.authorization) {
+    var token = req.headers.authorization.split(' ')[1];
+    try {
+      var decoded = jwt.decode(token, tokenSecret);
+      if (decoded.exp <= Date.now()) {
+        res.send(400, 'Access token has expired');
+      } else {
+        req.user = decoded.user;
+        return next();
+      }
+    } catch (err) {
+      return res.send(500, 'Error parsing token');
+    }
+  } else {
+    return res.send(401);
+  }
+}
+
+function createJwtToken(user) {
+  var payload = {
+    user: user,
+    iat: new Date().getTime(),
+    exp: moment().add('days', 7).valueOf()
+  };
+  return jwt.encode(payload, tokenSecret);
+}
+
+app.post('/auth/signup', function(req, res, next) {
+  var user = new User({
+    name: req.body.name,
+    email: req.body.email,
+    password: req.body.password
+  });
+  user.save(function(err) {
+    if (err) return next(err);
+    res.send(200);
+  });
 });
 
-router.get('/', function(req, res) {
-  res.json({ message: 'Home!' }); 
+app.post('/auth/login', function(req, res, next) {
+  User.findOne({ email: req.body.email }, function(err, user) {
+    if (!user) return res.send(401, 'User does not exist');
+    user.comparePassword(req.body.password, function(err, isMatch) {
+      if (!isMatch) return res.send(401, 'Invalid email and/or password');
+      var token = createJwtToken(user);
+      res.send({ token: token });
+    });
+  });
 });
 
-router.route('/events')
+app.post('/auth/facebook', function(req, res, next) {
+  var profile = req.body.profile;
+  var signedRequest = req.body.signedRequest;
+  var encodedSignature = signedRequest.split('.')[0];
+  var payload = signedRequest.split('.')[1];
 
-  // add an event (accessed at POST http://localhost:8080/events)
-  .post(function(req, res) {
-    
-    var event = new Event();    // create a new instance of the Event model
-    event.name = req.body.name;  // set the event name (comes from the request)
+  var appSecret = 'ca16738dcd74712d3c36938bbb6b1e53';
+
+  var expectedSignature = crypto.createHmac('sha256', appSecret).update(payload).digest('base64');
+  expectedSignature = expectedSignature.replace(/\+/g, '-').replace(/\//g, '_').replace(/=+$/, '');
+
+  if (encodedSignature !== expectedSignature) {
+    return res.send(400, 'Invalid Request Signature');
+  }
+
+  User.findOne({ facebook: profile.id }, function(err, existingUser) {
+    if (existingUser) {
+      var token = createJwtToken(existingUser);
+      return res.send(token);
+    }
+    var user = new User({
+      name: profile.name,
+      facebook: {
+        id: profile.id,
+        email: profile.email
+      }
+    });
+    user.save(function(err) {
+      if (err) return next(err);
+      var token = createJwtToken(user);
+      res.send(token);
+    });
+  });
+});
+
+app.post('/auth/google', function(req, res, next) {
+  var profile = req.body.profile;
+  User.findOne({ google: profile.id }, function(err, existingUser) {
+    if (existingUser) {
+      var token = createJwtToken(existingUser);
+      return res.send(token);
+    }
+    var user = new User({
+      name: profile.displayName,
+      google: {
+        id: profile.id,
+        email: profile.emails[0].value
+      }
+    });
+    user.save(function(err) {
+      if (err) return next(err);
+      var token = createJwtToken(user);
+      res.send(token);
+    });
+  });
+});
+
+app.get('/api/users', function(req, res, next) {
+  if (!req.query.email) {
+    return res.send(400, { message: 'Email parameter is required.' });
+  }
+
+  User.findOne({ email: req.query.email }, function(err, user) {
+    if (err) return next(err);
+    res.send({ available: !user });
+  });
+});
+
+
+
+app.get('/api/events', function(req, res, next) {
+  Event.find(function(err, events) {
+      if (err)
+        res.send(err);
+
+      res.json(events);
+    });
+  
+});
+
+app.get('/api/events/:id', function(req, res, next) {
+  Event.findById(req.params.id, function(err, event) {
+    if (err) return next(err);
+    res.send(event);
+  });
+});
+
+app.post('/api/events', function (req, res, next) {
+   var event = new Event();    // create a new instance of the Event model
+    event.name = req.body.eventName;  // set the event name (comes from the request)
                                 //configure angular to choose from dropdown menu
     event.save(function(err) {
       if (err)
@@ -81,52 +207,8 @@ router.route('/events')
       res.json({ message: 'Event Added!' });
     });
 
-    
-  })
-
-  // get all the events (accessed at GET http://localhost:8080/api/events)
-  .get(function(req, res) {
-    Event.find(function(err, events) {
-      if (err)
-        res.send(err);
-
-      res.json(events);
-    });
-  });
-
-// on routes that end in /events/:event_id
-// ----------------------------------------------------
-router.route('/events/:event_id')
-
-  // get the event with that id
-  .get(function(req, res) {
-    Event.findById(req.params.event_id, function(err, event) {
-      if (err)
-        res.send(err);
-      res.json(event);
-    });
-  })
-
-  // update the event with this id
-  .put(function(req, res) {
-    Event.findById(req.params.event_id, function(err, event) {
-
-      if (err)
-        res.send(err);
-
-      event.name = req.body.name;
-      event.save(function(err) {
-        if (err)
-          res.send(err);
-
-        res.json({ message: 'Event updated!' });
-      });
-
-    });
-  })
-
-  // delete the event with this id
-  .delete(function(req, res) {
+});
+app.delete('/api/events/:id', function(req, res) {
     Event.remove({
       _id: req.params.event_id
     }, function(err, event) {
@@ -137,10 +219,16 @@ router.route('/events/:event_id')
     });
   });
 
+app.get('*', function(req, res) {
+  res.redirect('/#' + req.originalUrl);
+});
 
-// REGISTER OUR ROUTES
-app.use('/api', router);
+app.use(function(err, req, res, next) {
+  console.error(err.stack);
+  res.send(500, { message: err.message });
+});
 
-// START THE SERVER
-app.listen(port);
-console.log('Server Listening at  ' + port);
+app.listen(app.get('port'), function() {
+  console.log('Express server listening on port ' + app.get('port'));
+});
+
