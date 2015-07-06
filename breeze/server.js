@@ -2,7 +2,6 @@
 var express    = require('express');
 var bodyParser = require('body-parser');
 var morgan     = require('morgan');
-var mongoose   = require('mongoose');
 var mongoose     = require('mongoose');
 var bcrypt = require('bcryptjs');
 var Schema       = mongoose.Schema;
@@ -42,9 +41,10 @@ userSchema.methods.comparePassword = function(candidatePassword, cb) {
     cb(null, isMatch);
   });
 };
+// define a model
 var User = mongoose.model('User', userSchema);
 var Event = mongoose.model('Event', eventSchema);
-mongoose.connect('localhost'); // connect to our database
+mongoose.connect('mongodb://karan:breeze@ds047732.mongolab.com:47732/breeze'); // connect to our database
 
 var port     = process.env.PORT; // set our port
 var app        = express();
