@@ -1,16 +1,59 @@
-// BASE SETUP
+// require all
 var express    = require('express');
 var bodyParser = require('body-parser');
-var app        = express();
 var morgan     = require('morgan');
+var mongoose     = require('mongoose');
+var bcrypt = require('bcryptjs');
+var Schema       = mongoose.Schema;
+
+// define schemas
+var eventSchema   = new Schema({
+	name: String
+});
+var userSchema = new Schema({
+  name: { type: String, trim: true, required: true },
+  email: { type: String, unique: true, lowercase: true, trim: true },
+  password: String,
+  facebook: {
+    id: String,
+    email: String
+  },
+  google: {
+    id: String,
+    email: String
+  }
+});
+userSchema.pre('save', function(next) {
+  var user = this;
+  if (!user.isModified('password')) return next();
+  bcrypt.genSalt(10, function(err, salt) {
+    if (err) return next(err);
+    bcrypt.hash(user.password, salt, function(err, hash) {
+      if (err) return next(err);
+      user.password = hash;
+      next();
+    });
+  });
+});
+userSchema.methods.comparePassword = function(candidatePassword, cb) {
+  bcrypt.compare(candidatePassword, this.password, function(err, isMatch) {
+    if (err) return cb(err);
+    cb(null, isMatch);
+  });
+};
+// define a model
+var User = mongoose.model('User', userSchema);
+var Event = mongoose.model('Event', eventSchema);
+mongoose.connect('mongodb://karan:breeze@ds047732.mongolab.com:47732/breeze'); // connect to our database
+
+var port     = process.env.PORT; // set our port
+var app        = express();
+var router = express.Router();
+
 app.use(morgan('dev')); // log requests to the console
 app.use(bodyParser.urlencoded({ extended: true }));
 app.use(bodyParser.json());
-var port     = process.env.PORT || 8080; // set our port
-var mongoose   = require('mongoose');
-mongoose.connect('localhost'); // connect to our database
-var Event     = require('public/services/Event');
-var router = express.Router();
+app.set('port', process.env.PORT);
 
 // middleware to use for all requests
 router.use(function(req, res, next) {
