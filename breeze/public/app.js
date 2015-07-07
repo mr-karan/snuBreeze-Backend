@@ -21,7 +21,7 @@ angular.module('breeze', ['ngResource', 'ngMessages', 'ngRoute', 'ngAnimate', 'm
       })
       .when('/events', {
         templateUrl: 'views/form.html',
-        controller: 'FormCtrl'
+        controller: 'AddCtrl'
       })
       .otherwise({
         redirectTo: '/'

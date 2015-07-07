@@ -1,14 +1,17 @@
-
-<div ng-app="breeze" ng-controller="MainController as vm">
-
-    <div class="container col-md-4 col-md-offset-4">
-        <form novalidate>
-            <h1>Breeze form</h1>
-            <formly-form model="vm.events" fields="vm.eventFields" form="vm.eventForm">
-                <button type="submit" class="btn btn-primary" ng-click="vm.submitForm()">Submit</button>
-            </formly-form>
-        </form>
-
-    </div>  
-
+<div class="container">
+  <div class="panel panel-default">
+    <div class="panel-heading">Add Events</div>
+    <div class="panel-body">
+      <form class="form" method="post" ng-submit="addEvent()" name="addForm">
+        <div class="form-group" ng-class="{ 'has-error' : addForm.showName.$invalid && addForm.showName.$dirty }">
+          <label class="control-label">Name</label>
+          <input class="form-control" type="text" name="eventName" ng-model="eventName" placeholder="Select Event Name Here" required autofocus>
+          <div class="help-block text-danger" ng-if="addForm.eventName.$dirty" ng-messages="addForm.eventName.$error">
+            <div ng-message="required">Event name is required.</div>
+          </div>
+        </div>
+        <button class="btn btn-primary" type="submit" ng-disabled="addForm.$invalid">Add</button>
+      </form>
+    </div>
+  </div>
 </div>
