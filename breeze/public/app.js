@@ -1,4 +1,4 @@
-angular.module('breeze', ['ngResource', 'ngMessages', 'ngRoute', 'ngAnimate', 'mgcrea.ngStrap'])
+angular.module('breeze', ['ngResource', 'ngMessages', 'ngRoute', 'ngAnimate', 'mgcrea.ngStrap','formly', 'formlyBootstrap'])
   .config(function ($routeProvider, $locationProvider) {
     $locationProvider.html5Mode(true);
 
@@ -20,8 +20,8 @@ angular.module('breeze', ['ngResource', 'ngMessages', 'ngRoute', 'ngAnimate', 'm
         controller: 'SignupCtrl'
       })
       .when('/events', {
-        templateUrl: 'views/add.html',
-        controller: 'AddCtrl'
+        templateUrl: 'views/form.html',
+        controller: 'FormCtrl'
       })
       .otherwise({
         redirectTo: '/'
