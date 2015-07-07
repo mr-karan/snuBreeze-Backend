@@ -1,0 +1,14 @@
+
+<div ng-app="breeze" ng-controller="MainController as vm">
+
+    <div class="container col-md-4 col-md-offset-4">
+        <form novalidate>
+            <h1>Breeze form</h1>
+            <formly-form model="vm.events" fields="vm.eventFields" form="vm.eventForm">
+                <button type="submit" class="btn btn-primary" ng-click="vm.submitForm()">Submit</button>
+            </formly-form>
+        </form>
+
+    </div>  
+
+</div>
