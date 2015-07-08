@@ -1,6 +1,6 @@
 angular.module('breeze')
   .controller('AddCtrl', function($scope, $alert, Event) {
-    $scope.addShow = function() {
+    $scope.addEvent = function() {
       Event.save({ eventName: $scope.eventName }).$promise
         .then(function() {
           $scope.eventName = '';
