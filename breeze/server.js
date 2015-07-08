@@ -11,7 +11,7 @@ var async = require('async');
 var request = require('request');
 var tokenSecret = 'breezeToken';
 
-var Schema       = mongoose.Schema;
+var Schema  = mongoose.Schema;
 
 // define schemas
 var eventSchema   = new Schema({
@@ -59,6 +59,46 @@ app.use(logger('dev'));
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: true }));
 app.use(express.static(path.join(__dirname, 'public')));
+
+app.get('/api/events', function(req, res, next) {
+  Event.find(function(err, events) {
+      if (err)
+        res.send(err);
+
+      res.json(events);
+    });
+  
+});
+
+app.get('/api/events/:id', function(req, res, next) {
+  Event.findById(req.params.id, function(err, event) {
+    if (err) return next(err);
+    res.send(event);
+  });
+});
+
+app.post('/api/events', function (req, res, next) {
+   var event = new Event();    // create a new instance of the Event model
+    event.name = req.body.eventName;  // set the event name (comes from the request)
+                                //configure angular to choose from dropdown menu
+    event.save(function(err) {
+      if (err)
+        res.send(err);
+
+      res.json({ message: 'Event Added!' });
+    });
+
+});
+app.delete('/api/events/:id', function(req, res) {
+    Event.remove({
+      _id: req.params.event_id
+    }, function(err, event) {
+      if (err)
+        res.send(err);
+
+      res.json({ message: 'Successfully deleted' });
+    });
+  });
 
 function ensureAuthenticated(req, res, next) {
   if (req.headers.authorization) {
@@ -179,47 +219,6 @@ app.get('/api/users', function(req, res, next) {
   });
 });
 
-
-
-app.get('/api/events', function(req, res, next) {
-  Event.find(function(err, events) {
-      if (err)
-        res.send(err);
-
-      res.json(events);
-    });
-  
-});
-
-app.get('/api/events/:id', function(req, res, next) {
-  Event.findById(req.params.id, function(err, event) {
-    if (err) return next(err);
-    res.send(event);
-  });
-});
-
-app.post('/api/events', function (req, res, next) {
-   var event = new Event();    // create a new instance of the Event model
-    event.name = req.body.eventName;  // set the event name (comes from the request)
-                                //configure angular to choose from dropdown menu
-    event.save(function(err) {
-      if (err)
-        res.send(err);
-
-      res.json({ message: 'Event Added!' });
-    });
-
-});
-app.delete('/api/events/:id', function(req, res) {
-    Event.remove({
-      _id: req.params.event_id
-    }, function(err, event) {
-      if (err)
-        res.send(err);
-
-      res.json({ message: 'Successfully deleted' });
-    });
-  });
 
 app.get('*', function(req, res) {
   res.redirect('/#' + req.originalUrl);
