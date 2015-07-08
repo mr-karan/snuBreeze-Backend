@@ -15,7 +15,10 @@ var Schema  = mongoose.Schema;
 
 // define schemas
 var eventSchema   = new Schema({
-  name: String
+  Name: String,
+  phoneNum: String,
+  eventName:String,
+  userEmail:String
 });
 var userSchema = new Schema({
   name: { type: String, trim: true, required: true },
@@ -79,16 +82,20 @@ app.get('/api/events/:id', function(req, res, next) {
 
 app.post('/api/events', function (req, res, next) {
    var event = new Event();    // create a new instance of the Event model
-    event.name = req.body.eventName;  // set the event name (comes from the request)
+    event.eventName = req.body.eventName;  // set the event name (comes from the request)
+    event.userEmail=req.body.userEmail;
+    event.phoneNum=req.body.phoneNum;
+    event.Name=req.body.Name;
                                 //configure angular to choose from dropdown menu
     event.save(function(err) {
       if (err)
         res.send(err);
 
-      res.json({ message: 'Event Added!' });
+      res.json({ message: 'Event Successfully Added!' });
     });
 
 });
+/*
 app.delete('/api/events/:id', function(req, res) {
     Event.remove({
       _id: req.params.event_id
@@ -99,6 +106,7 @@ app.delete('/api/events/:id', function(req, res) {
       res.json({ message: 'Successfully deleted' });
     });
   });
+*/
 
 function ensureAuthenticated(req, res, next) {
   if (req.headers.authorization) {

@@ -1,9 +1,12 @@
 angular.module('breeze')
   .controller('AddCtrl', function($scope, $alert, Event) {
     $scope.addEvent = function() {
-      Event.save({ eventName: $scope.eventName }).$promise
+      Event.save({ eventName: $scope.eventName,userEmail:$scope.userEmail,Name:$scope.Name,phoneNum:$scope.phoneNum }).$promise
         .then(function() {
           $scope.eventName = '';
+          $scope.Name = '';
+          $scope.phoneNum = '';
+          $scope.userEmail = '';
           $scope.addForm.$setPristine();
           $alert({
             content: 'Event has been added.',
