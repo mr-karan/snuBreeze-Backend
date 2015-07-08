@@ -3,7 +3,7 @@
     <div class="panel-heading">Add Events</div>
     <div class="panel-body">
       <form class="form" method="post" ng-submit="addEvent()" name="addForm">
-        <div class="form-group" ng-class="{ 'has-error' : addForm.showName.$invalid && addForm.showName.$dirty }">
+        <div class="form-group" ng-class="{ 'has-error' : addForm.eventName.$invalid && addForm.eventName.$dirty }">
           <label class="control-label">Name</label>
           <input class="form-control" type="text" name="eventName" ng-model="eventName" placeholder="Select Event Name Here" required autofocus>
           <div class="help-block text-danger" ng-if="addForm.eventName.$dirty" ng-messages="addForm.eventName.$error">
