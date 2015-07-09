@@ -7,8 +7,10 @@
       <!-- Event Name Field -->
 
         <div class="form-group" ng-class="{ 'has-error' : addForm.eventName.$invalid && addForm.eventName.$dirty }">
-          <label class="control-label">Add Event Name</label>
-          <input class="form-control" type="text" name="eventName" ng-model="eventName" placeholder="Select Event Name Here" required autofocus>
+          <label class="control-label" for="eventName">Add Event Name</label>
+          <select class="form-control" name="eventName" ng-model="eventName" required autofocus>
+            <option value="event 1">Event 1</option>
+          </select>
           <div class="help-block text-danger" ng-if="addForm.eventName.$dirty" ng-messages="addForm.eventName.$error">
             <div ng-message="required">Event name is required.</div>
           </div>
@@ -16,7 +18,7 @@
            <!-- Full Name -->
           <div class="form-group" ng-class="{ 'has-error' : addForm.Name.$invalid && addForm.Name.$dirty }">
           <label class="control-label">Your Name</label>
-          <input class="form-control" type="text" name="Name" ng-model="Name" placeholder="Your full Name" required autofocus>
+          <input class="form-control" type="name" name="Name" ng-model="Name" placeholder="Your full Name" required autofocus>
           <div class="help-block text-danger" ng-if="addForm.Name.$dirty" ng-messages="addForm.Name.$error">
             <div ng-message="required">Your Name is required.</div>
           </div>
@@ -36,7 +38,7 @@
           <div class="form-group" ng-class="{ 'has-error' : addForm.phoneNum.$invalid && addForm.phoneNum.$dirty }">
           <label class="control-label">Phone Number</label>
 
-          <input class="form-control" type="number" name="phoneNum" ng-model="phoneNum" placeholder="Your Phone Number" required autofocus>
+          <input class="form-control" type="tel" name="phoneNum" ng-model="phoneNum" placeholder="Your Phone Number" required autofocus>
           <div class="help-block text-danger" ng-if="addForm.phoneNum.$dirty" ng-messages="addForm.phoneNum.$error">
             <div ng-message="required">Phone Number is required.Please ensure it is a valid phone number</div>
           </div>
