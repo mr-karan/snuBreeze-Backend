@@ -6,8 +6,8 @@ angular.module('breeze', ['ngResource', 'ngMessages', 'ui.router','ngAnimate','m
         templateUrl: 'views/home.html',
         controller:'MainCtrl'
       })
-        .state('travels', {
-        url:'/travels',
+        .state('events', {
+        url:'/events',
        templateUrl: 'views/form.html',
        controller: 'AddCtrl'
      })
