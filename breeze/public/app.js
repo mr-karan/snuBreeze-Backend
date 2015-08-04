@@ -1,11 +1,6 @@
 angular.module('breeze', ['ngResource', 'ngMessages', 'ui.router','ngAnimate','mgcrea.ngStrap','ui.bootstrap', 'satellizer'])
     .config(function($stateProvider, $urlRouterProvider, $authProvider) {
       $stateProvider
-      .state('landing', {
-        url: '/',
-        templateUrl: 'views/landing.html',
-        controller:'LandCtrl'
-      })
       .state('home', {
         url: '/home',
         templateUrl: 'views/home.html',

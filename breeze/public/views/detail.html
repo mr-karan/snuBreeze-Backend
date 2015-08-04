@@ -1,0 +1,27 @@
+<div class="container-fluid">
+  <table class="table table-striped table-hover ">
+<thead>
+<tr>
+
+  <th>Name</th>
+  <th>Email</th>
+  <th>Contact</th>
+  <th>Source</th>
+  <th>Destination</th>
+  <th>Date</th>
+  <th>Time</th>
+</tr>
+</thead>
+<tbody ng-repeat="t in ex">
+  <tr>
+    <td>{{t.Name}}</td>
+    <td>{{t.userEmail}}</td>
+    <td>{{t.phoneNum}}</td>
+    <td>{{t.Source}}</td>
+    <td>{{t.Destination}}</td>
+    <td>{{t.travelDate}}</td>
+    <td>{{t.travelTime}}</td>
+  </tr>
+</tbody>
+</table>
+</div>
