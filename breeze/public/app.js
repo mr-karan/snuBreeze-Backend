@@ -1,47 +1,67 @@
-angular.module('breeze', ['ngResource', 'ngMessages', 'ngRoute', 'ngAnimate', 'mgcrea.ngStrap'])
-  .config(function ($routeProvider, $locationProvider) {
-    $locationProvider.html5Mode(true);
-
-    $routeProvider
-      .when('/', {
+angular.module('breeze', ['ngResource', 'ngMessages', 'ui.router','ngAnimate','mgcrea.ngStrap','ui.bootstrap', 'satellizer'])
+    .config(function($stateProvider, $urlRouterProvider, $authProvider) {
+      $stateProvider
+      .state('landing', {
+        url: '/',
+        templateUrl: 'views/landing.html',
+        controller:'LandCtrl'
+      })
+      .state('home', {
+        url: '/home',
         templateUrl: 'views/home.html',
-        controller: 'MainCtrl'
+        controller:'MainCtrl'
       })
-      .when('/events/:id', {
-        templateUrl: 'views/detail.html',
-        controller: 'DetailCtrl'
-      })
-      .when('/login', {
-        templateUrl: 'views/login.html',
-        controller: 'LoginCtrl'
-      })
-      .when('/signup', {
-        templateUrl: 'views/signup.html',
-        controller: 'SignupCtrl'
-      })
-      .when('/events', {
-        templateUrl: 'views/form.html',
-        controller: 'AddCtrl'
-      })
-      .otherwise({
-        redirectTo: '/'
-      });
-  })
-  .config(function ($httpProvider) {
-    $httpProvider.interceptors.push(function ($rootScope, $q, $window, $location) {
-      return {
-        request: function(config) {
-          if ($window.localStorage.token) {
-            config.headers.Authorization = 'Bearer ' + $window.localStorage.token;
+        .state('travels', {
+        url:'/travels',
+       templateUrl: 'views/form.html',
+       controller: 'AddCtrl'
+     })
+        .state('login', {
+          url: '/login',
+          templateUrl: 'views/login.html',
+          controller: 'LoginCtrl'
+        })
+        .state('signup', {
+          url: '/signup',
+          templateUrl: 'views/signup.html',
+          controller: 'SignupCtrl'
+        })
+        .state('logout', {
+          url: '/logout',
+          template: null,
+          controller: 'LogoutCtrl'
+        })
+        .state('detail',{
+            url:'/detail',
+            templateUrl:'views/detail.html',
+            controller:'DetailCtrl'
+        })
+        .state('profile', {
+          url: '/profile',
+          templateUrl: 'views/profile.html',
+          controller: 'ProfileCtrl',
+          resolve: {
+            authenticated: function($q, $location, $auth) {
+              var deferred = $q.defer();
+
+              if (!$auth.isAuthenticated()) {
+                $location.path('/login');
+              } else {
+                deferred.resolve();
+              }
+
+              return deferred.promise;
+            }
           }
-          return config;
-        },
-        responseError: function(response) {
-          if (response.status === 401 || response.status === 403) {
-            $location.path('/login');
-          }
-          return $q.reject(response);
-        }
-      }
-    });
-  });
+        });
+
+      $urlRouterProvider.otherwise('/');
+      $authProvider.facebook({
+     clientId: '493629860812516'
+   });
+
+   $authProvider.google({
+     clientId: '631036554609-v5hm2amv4pvico3asfi97f54sc51ji4o.apps.googleusercontent.com'
+   });
+
+})
