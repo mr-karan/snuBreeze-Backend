@@ -1,0 +1,81 @@
+<div class="container-fluid"  ng-if="isAuthenticated()">
+
+        <!-- HEADER AND COUNT -->
+        <div class="jumbotron text-center visible-desktop hidden-phone" >
+            <h1>Hi {{username}}! </h1>
+            <h3>Total bookings on poolYourCar: <span class="label label-primary">{{ bookings.length }}</span></h3>
+            <h3>Your bookings: <span class="label label-primary">{{filteredBookings.length}}</span></h3>
+            <h4 ng-if="username.length == 0">Reload if you dont see your Name!</h4>
+        </div>
+
+
+              <div ng-if="filteredBookings.length == 0">
+                <h4>No bookings found. Use the <a href="/#/travels" class="btn btn-warning btn-xs" >Book</a> option to start carpooling!</h4>
+                <small>If you dont see your name above,try reloading.</p>
+              </div>
+              <div class="panel panel-default col-md-4"  ng-repeat="booking in filteredBookings=( bookings )" ng-show="username.length > 0">
+                <div class="bookingcard">
+                <div class="panel-body ">
+                  <div ng-show="username.length > 0">
+                    <div class="row">
+                      <div>
+                        <h4 class="text-center">I  <!--{{ booking.Name }}--> am going from </h4>
+                        <h4 class="text-center">{{booking.Source| limitTo: 25 }}{{booking.Source.length > 25 ? '...' : ''}} <br/>to
+                          <br/> {{booking.Destination| limitTo: 25 }}{{booking.Destination.length > 25 ? '...' : ''}}</h4>
+                        <h4 class="text-center">  on  {{booking.travelDate}}</h4>
+
+                      </div>
+                      <div>
+                        <button class="btn btn-xs btn-danger" ng-click="deleteBooking(booking._id)">Delete</button>
+                        <button class="btn btn-xs btn-success pull-right" data-toggle="modal" data-target="#myModal" ng-click="getRes(booking._id)" pull-right>Find!</button>
+                      </div>
+                    </div>
+                    <div ng-if="filteredBookings.length == 0">
+                      <h4>No bookings found. Use the <a href="/#/travels" class="btn btn-warning btn-xs" >Book</a> option to start carpooling!</h4>
+                      <small>If you dont see your name above,try reloading.</p>
+                    </div>
+                  </div>
+                </div>
+              </div>
+              </div>
+
+                <!--Result output-->
+          <div class="modal fade col-lg-12"  id="myModal"  >
+            <div class="modal-dialog" role="document">
+              <div class="modal-content">
+                <div class="modal-header">
+                  <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+                  <h4 class="modal-title text-center" id="myModalLabel"><span class="label label-primary" ng-if="filteredResult.length > 0">{{filteredResult.length}}</span> Others travelling the same as you</h4>
+                </div>
+                <div class="modal-body ">
+
+                  <div ng-show="filteredResult.length == 0">
+                    <h4>Aww snap! There aren't any travellers on your chosen booking!</h4>
+                    <small>Try booking to an alternate destination or check again soon till someone registers!</small>
+                  </div>
+                  <div class="col-centered" >
+                    <div class="panel panel-default bookingcard" ng-show="status2" ng-repeat="booking in filteredResult = (bookingResultArray | filter:{travelDate:bookingReference.travelDate,Name:'!'+userdata.displayName})">
+                        <div class="panel-body" id="resultcard">
+                          <h4 class="text-center" style="color:#2c3e50;">{{booking.Name}}</h4>
+                          <h4 class="text-center" >is going from</h4>
+                          <h4 class="text-center" style="color:#2c3e50;">{{booking.Source| limitTo: 25 }}{{booking.Source.length > 25 ? '...' : ''}}</h4>
+                            <h5 class="text-center" > to </h5>
+                          <h4 class="text-center" style="color:#2c3e50;">{{booking.Destination| limitTo: 25 }}{{booking.Destination.length > 25 ? '...' : ''}}</h4>
+                            <h5 class="text-center"  >on {{booking.travelDate}} at </h5>
+                            <h4 class="text-center" style="color:#2c3e50;"> {{booking.travelTime}}</h4>
+                          <h5 class="text-center"  > Contact at </h5>
+                          <h4 class="text-center"><a href="mailto:{{booking.userEmail}}?Subject=poolYourCar" target="_top">{{booking.userEmail}}</a></h4>
+                          <h4 class="text-center"><a href="tel:{{booking.phoneNum}}">{{booking.phoneNum}}</a></h4>
+                    </div>
+                  </div>
+                </div>
+              </div>
+
+                <div class="modal-footer">
+                  <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+
+                </div>
+              </div>
+            </div>
+          </div>
+    </div>

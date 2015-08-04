@@ -1,13 +1,27 @@
 angular.module('breeze')
-  .controller('AddCtrl', function($scope, $alert, Event) {
+  .controller('AddCtrl', function($scope, $alert, Event,$http,$location,$filter) {
+    $scope.message_head = "Register for SNU Breeze 2015 Events here";
+    $http.get('/api/me')
+    .success(function(data){
+      $scope.user = data;
+
+      console.log(data);
+    });
+
     $scope.addEvent = function() {
-      Event.save({ eventName: $scope.eventName,userEmail:$scope.userEmail,Name:$scope.Name,phoneNum:$scope.phoneNum }).$promise
+      Event.save({
+        Name: $scope.user.displayName,
+        userEmail:$scope.user.email,
+        phoneNum:$scope.user.phoneNum,
+        eventName: $scope.eventName
+      }).$promise
         .then(function() {
           $scope.eventName = '';
           $scope.Name = '';
           $scope.phoneNum = '';
           $scope.userEmail = '';
           $scope.addForm.$setPristine();
+          $location.url('/home');
           $alert({
             content: 'Event has been added.',
             animation: 'fadeZoomFadeDown',

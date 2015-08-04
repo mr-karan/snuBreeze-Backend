@@ -17,10 +17,7 @@ var Schema  = mongoose.Schema;
 
 // define schemas
 var eventSchema   = new Schema({
-  Name: String,
-  phoneNum: String,
-  eventName:String,
-  userEmail:String
+  eventName:String
 });
 var userSchema = new Schema({
   email: { type: String, unique: true, lowercase: true },
@@ -162,12 +159,9 @@ app.get('/api/events/:id',ensureAuthenticated, function(req, res, next) { //Get 
   });
 });
 
-app.post('/api/eventSchema',ensureAuthenticated, function (req, res, next) {
+app.post('/api/events',ensureAuthenticated, function (req, res, next) {
   var event = new Event();    // create a new instance of the Event model
     event.eventName = req.body.eventName;  // set the event name (comes from the request)
-    event.userEmail=req.body.userEmail;
-    event.phoneNum=req.body.phoneNum;
-    event.Name=req.body.Name;
                                 //configure angular to choose from dropdown menu
     event.save(function(err) {
       if (err)
@@ -313,5 +307,3 @@ app.post('/auth/signup', function(req, res) {
 app.listen(app.get('port'), function() {
   console.log('Express server listening on port ' + app.get('port'));
 });
-
-
