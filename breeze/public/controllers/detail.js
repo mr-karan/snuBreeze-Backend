@@ -1,7 +1,7 @@
 angular.module('breeze')
-  .controller('DetailCtrl', function($scope,$http, Travel) {
-    $scope.headingTitle = "Fellow Cab Goers";
-    $http.get('/api/carpooler')
+  .controller('DetailCtrl', function($scope,$http, Event) {
+    $scope.headingTitle = "SNU Breeze 2015 Events";
+    $http.get('/api/events')
         .success(function(data) {
             $scope.ex = data;
             console.log(data);

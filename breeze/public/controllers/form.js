@@ -1,6 +1,11 @@
 angular.module('breeze')
   .controller('AddCtrl', function($scope, $alert, Event,$http,$location,$filter) {
     $scope.message_head = "Register for SNU Breeze 2015 Events here";
+
+    $scope.events = [
+      // Fill in events
+    ];
+
     $http.get('/api/me')
     .success(function(data){
       $scope.user = data;
@@ -25,7 +30,7 @@ angular.module('breeze')
           $alert({
             content: 'Event has been added.',
             animation: 'fadeZoomFadeDown',
-            type: 'material',
+            type: 'info',
             duration: 3
           });
         })
@@ -35,7 +40,7 @@ angular.module('breeze')
           $alert({
             content: response.data.message,
             animation: 'fadeZoomFadeDown',
-            type: 'material',
+            type: 'info',
             duration: 3
           });
         });

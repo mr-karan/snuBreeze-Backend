@@ -17,6 +17,9 @@ var Schema  = mongoose.Schema;
 
 // define schemas
 var eventSchema   = new Schema({
+  Name: String,
+  phoneNum: String,
+  userEmail:String,
   eventName:String
 });
 var userSchema = new Schema({

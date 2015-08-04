@@ -46,7 +46,7 @@ angular.module('breeze')
              $alert({
                content: 'You have successfully linked ' + provider + ' account',
                animation: 'fadeZoomFadeDown',
-               type: 'material',
+               type: 'info',
                duration: 3
              });
            })
