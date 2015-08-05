@@ -82,7 +82,6 @@ angular.module('breeze')
         //console.log($scope.status2);
           $scope.status2 = true;
 
-      };
 
 
   });
