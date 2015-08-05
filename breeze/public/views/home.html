@@ -3,7 +3,7 @@
         <!-- HEADER AND COUNT -->
         <div class="jumbotron text-center visible-desktop hidden-phone" >
             <h1>Hi {{username}}! </h1>
-            <h3>Total registrations on poolYourCar: <span class="label label-primary">{{ registrations.length }}</span></h3>
+            <h3>Total registrations for breeze events: <span class="label label-primary">{{ registrations.length }}</span></h3>
             <h3>Your registrations: <span class="label label-primary">{{filteredRegistrations.length}}</span></h3>
             <h4 ng-if="username.length == 0">Reload if you dont see your Name!</h4>
         </div>
@@ -14,19 +14,19 @@
                 <small>If you dont see your name above,try reloading.</p>
               </div>
               <div class="col-md-6 col-md-offset-3">
-              <div class="panel panel-default col-md-4"  ng-repeat="registration in filteredRegistrations=( registrations )" ng-show="username.length > 0">
+              <div class="panel panel-default"  ng-repeat="registration in filteredRegistrations=( registrations )" ng-show="username.length > 0">
                 <div class="bookingcard">
                 <div class="panel-body ">
                   <div ng-show="username.length > 0">
                     <div class="row">
                       <div>
-                        <h4 class="text-center">I  {{ registration.eventName }}</h4>
+                        <h4 class="text-center">{{ registration.eventName }}</h4>
 
 
                       </div>
-                      <div>
+                      <div class="text-center">
                         <button class="btn btn-xs btn-danger" ng-click="deleteRegistration(registration._id)">Delete</button>
-            
+
                       </div>
                     </div>
                     <div ng-if="filteredRegistrations.length == 0">

@@ -1,5 +1,5 @@
 angular.module('breeze')
-  .controller('MainCtrl',function($scope,$http, Event,moment,$auth){
+  .controller('MainCtrl',function($scope,$http, Event,$auth){
 
     $scope.formData = {};
 
@@ -54,7 +54,7 @@ angular.module('breeze')
 
 
 
-        $scope.getRes = function(id) {
+        /*$scope.getRes = function(id) {
           $scope.status2=false;
           //$scope.status3 = false;
           $http.get('/api/carpooler/'+id)
@@ -73,10 +73,10 @@ angular.module('breeze')
             });
 
         //  $scope.status2 = true;
-        };
+      };*/
 
         //console.log($scope.bookings);
-        console.log($scope.bookingResultArray);
+      //  console.log($scope.bookingResultArray);
         //console.log("success");
         //console.log($scope.distance.length);
         //console.log($scope.status2);

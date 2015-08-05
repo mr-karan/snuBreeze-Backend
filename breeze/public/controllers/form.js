@@ -3,7 +3,9 @@ angular.module('breeze')
     $scope.message_head = "Register for SNU Breeze 2015 Events here";
 
     $scope.events = [
-      // Fill in events
+      'event 1',
+      'event 2',
+      'event 3'
     ];
 
     $http.get('/api/me')

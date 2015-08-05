@@ -146,7 +146,7 @@ app.put('/api/me', ensureAuthenticated, function(req, res) {
 
 
 app.get('/api/events', ensureAuthenticated,function(req, res, next) {
-  Events.find({},function(err, events) {
+  Event.find({},function(err, events) {
       if (err)
         res.send(err);
 
@@ -177,7 +177,7 @@ app.post('/api/events',ensureAuthenticated, function (req, res, next) {
 
 app.delete('/api/events/:id', ensureAuthenticated,function(req, res) {
     Event.remove({
-      _id: req.params.event_id
+      _id: req.params.id
     }, function(err, event) {
       if (err)
         res.send(err);

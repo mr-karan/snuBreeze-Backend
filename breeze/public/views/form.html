@@ -9,7 +9,7 @@
         <div class="form-group" ng-class="{ 'has-error' : addForm.eventName.$invalid && addForm.eventName.$dirty }">
           <label class="control-label" for="eventName">Add Event Name</label>
           <select class="form-control" name="eventName" ng-model="eventName" required autofocus>
-            <option ng-repeat="event in events"value="event">event</option>
+            <option ng-repeat="event in events">{{event}}</option>
           </select>
           <div class="help-block text-danger" ng-if="addForm.eventName.$dirty" ng-messages="addForm.eventName.$error">
             <div ng-message="required">Event name is required.</div>
