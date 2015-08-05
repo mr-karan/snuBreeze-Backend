@@ -146,7 +146,7 @@ app.put('/api/me', ensureAuthenticated, function(req, res) {
 
 
 app.get('/api/events', ensureAuthenticated,function(req, res, next) {
-  Events.find({},function(err, events) {
+  Event.find({},function(err, events) {
       if (err)
         res.send(err);
 
