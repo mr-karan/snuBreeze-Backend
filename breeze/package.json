@@ -3,7 +3,7 @@
   "version": "0.0.0",
   "private": true,
   "scripts": {
-  "start": "node ./bin/www"
+    "start": "node server.js"
   },
   "dependencies": {
     "angular": "^1.4.1",
@@ -29,5 +29,16 @@
       "nodemailer": "^0.6.3",
       "request": "^2.34.0",
       "serve-favicon": "~2.3.0"
-  }
+  },
+   "engines": {
+    "node": ">= 0.6.0",
+    "npm": ">= 1.0.0"
+  },
+
+
+  "devDependencies": {},
+  "bundleDependencies": [],
+
+  "private": true,
+  "main": "server.js"
 }
