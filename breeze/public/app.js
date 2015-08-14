@@ -35,7 +35,7 @@ angular.module('breeze', ['ngResource', 'ngMessages', 'ui.router','ngAnimate','m
           url: '/profile',
           templateUrl: 'views/profile.html',
           controller: 'ProfileCtrl',
-          resolve: {
+          /*resolve: {
             authenticated: function($q, $location, $auth) {
               var deferred = $q.defer();
 
@@ -47,7 +47,7 @@ angular.module('breeze', ['ngResource', 'ngMessages', 'ui.router','ngAnimate','m
 
               return deferred.promise;
             }
-          }
+          }*/
         });
 
       $urlRouterProvider.otherwise('/');
