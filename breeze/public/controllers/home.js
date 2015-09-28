@@ -19,7 +19,7 @@ angular.module('breeze')
           $scope.userdata = data;
           $scope.username = data.displayName;
           $scope.useremail = data.email;
-          console.log(data);
+          console.log($scope.userdata);
         });
 
     $http.get('/api/events')

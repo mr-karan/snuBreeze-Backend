@@ -9,7 +9,7 @@
         </div>
 
 
-              <div class="col-md-offset-4 col-md-4"ng-if="filteredRegistrations.length == 0">
+              <div ng-if="filteredRegistrations.length == 0">
                 <h4>No registrations found. Use the <a href="/#/events" class="btn btn-warning btn-xs" >Register</a> option</h4>
                 <small>If you dont see your name above,try reloading.</p>
               </div>
@@ -30,7 +30,7 @@
                       </div>
                     </div>
                     <div ng-if="filteredRegistrations.length == 0">
-                      <h4>No registrations found. Use the <a href="/#/travels" class="btn btn-warning btn-xs" >Book</a> option to start carpooling!</h4>
+                      <h4>No registrations found. Use the <a href="/#/events" class="btn btn-warning btn-xs" >Register for events</a> option to Register!</h4>
                       <small>If you dont see your name above,try reloading.</p>
                     </div>
                   </div>
@@ -40,42 +40,5 @@
             </div>
 
                 <!--Result output-->
-          <div class="modal fade col-lg-12"  id="myModal"  >
-            <div class="modal-dialog" role="document">
-              <div class="modal-content">
-                <div class="modal-header">
-                  <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
-                  <h4 class="modal-title text-center" id="myModalLabel"><span class="label label-primary" ng-if="filteredResult.length > 0">{{filteredResult.length}}</span> Others travelling the same as you</h4>
-                </div>
-                <div class="modal-body ">
-
-                  <div ng-show="filteredResult.length == 0">
-                    <h4>Aww snap! There aren't any travellers on your chosen registration!</h4>
-                    <small>Try registration to an alternate destination or check again soon till someone registers!</small>
-                  </div>
-                  <div class="col-centered" >
-                    <div class="panel panel-default bookingcard" ng-show="status2" ng-repeat="registration in filteredResult = (bookingResultArray | filter:{travelDate:bookingReference.travelDate,Name:'!'+userdata.displayName})">
-                        <div class="panel-body" id="resultcard">
-                          <h4 class="text-center" style="color:#2c3e50;">{{registration.Name}}</h4>
-                          <h4 class="text-center" >is going from</h4>
-                          <h4 class="text-center" style="color:#2c3e50;">{{registration.Source| limitTo: 25 }}{{registration.Source.length > 25 ? '...' : ''}}</h4>
-                            <h5 class="text-center" > to </h5>
-                          <h4 class="text-center" style="color:#2c3e50;">{{registration.Destination| limitTo: 25 }}{{registration.Destination.length > 25 ? '...' : ''}}</h4>
-                            <h5 class="text-center"  >on {{registration.travelDate}} at </h5>
-                            <h4 class="text-center" style="color:#2c3e50;"> {{registration.travelTime}}</h4>
-                          <h5 class="text-center"  > Contact at </h5>
-                          <h4 class="text-center"><a href="mailto:{{registration.userEmail}}?Subject=poolYourCar" target="_top">{{registration.userEmail}}</a></h4>
-                          <h4 class="text-center"><a href="tel:{{registration.phoneNum}}">{{registration.phoneNum}}</a></h4>
-                    </div>
-                  </div>
-                </div>
-              </div>
-
-                <div class="modal-footer">
-                  <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
-
-                </div>
-              </div>
-            </div>
-          </div>
+          
     </div>
