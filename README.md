@@ -2,4 +2,6 @@
 # snuBreeze-ComingSoon
 Backend made using MEAN stack
 
+- [ ] add tests
+
 http://app-breezesnu.rhcloud.com/
