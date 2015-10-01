@@ -1,6 +1,10 @@
 angular.module('breeze')
   .controller('MainCtrl',function($scope,$http, Event,$auth){
-
+    $scope.bool = false;
+    if(!$auth.isAuthenticated())
+      $scope.bool = true;
+    else
+      $scope.bool = false;
     $scope.formData = {};
 
     /*$scope.getUser = function() {
@@ -11,7 +15,10 @@ angular.module('breeze')
     $scope.status2 = false;
     $scope.status3 = false;
     $scope.isAuthenticated = function() {
-      return $auth.isAuthenticated();
+      if($auth.isAuthenticated())
+        return true;
+      else 
+        return false;
     };
 
       $http.get('/api/me')

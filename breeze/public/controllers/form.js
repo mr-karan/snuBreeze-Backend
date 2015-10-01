@@ -58,7 +58,8 @@ angular.module('breeze')
         Name: $scope.user.displayName,
         userEmail:$scope.user.email,
         phoneNum:$scope.user.phoneNum,
-        eventName: $scope.eventName
+        eventName: $scope.eventName,
+        uniName: $scope.user.uniName
       }).$promise
         .then(function() {
           $scope.eventName = '';

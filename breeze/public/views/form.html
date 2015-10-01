@@ -6,7 +6,7 @@
 
       <!-- Event Name Field -->
         <div class="form-group" ng-class="{ 'has-error' : addForm.clubName.$invalid && addForm.clubName.$dirty }">
-          <label class="control-label" for="clubName">club Name</label>
+          <label class="control-label" for="clubName">Club Name</label>
           <select class="form-control" name="clubName" ng-model="clubName" ng-change="onchange()" required autofocus>
             <option ng-repeat="club in clubNames">{{club}}</option>
           </select>

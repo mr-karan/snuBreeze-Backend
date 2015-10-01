@@ -20,14 +20,16 @@ var eventSchema   = new Schema({
   Name: String,
   phoneNum: String,
   userEmail:String,
-  eventName:String
+  eventName:String,
+  uniName: String
 });
 var userSchema = new Schema({
   email: { type: String, unique: true, lowercase: true },
   password: { type: String, select: false },
   displayName: String,
   facebook: String,
-  phoneNum:String
+  phoneNum:String,
+  uniName:String
 });
 
 userSchema.pre('save', function(next) {
@@ -121,7 +123,7 @@ function createJWT(user) {
  | GET /api/me
  |--------------------------------------------------------------------------
  */
-app.get('/api/me', ensureAuthenticated, function(req, res) {
+app.get('/api/me',ensureAuthenticated, function(req, res) {
   User.findById(req.user, function(err, user) {
     res.send(user);
   });
@@ -132,7 +134,7 @@ app.get('/api/me', ensureAuthenticated, function(req, res) {
  | PUT /api/me
  |--------------------------------------------------------------------------
  */
-app.put('/api/me', ensureAuthenticated, function(req, res) {
+app.put('/api/me', function(req, res) {
   User.findById(req.user, function(err, user) {
     if (!user) {
       return res.status(400).send({ message: 'User not found' });
@@ -147,7 +149,7 @@ app.put('/api/me', ensureAuthenticated, function(req, res) {
 });
 
 
-app.get('/api/events', ensureAuthenticated,function(req, res, next) {
+app.get('/api/events',function(req, res, next) {
   Event.find({},function(err, events) {
       if (err)
         res.send(err);
@@ -157,17 +159,20 @@ app.get('/api/events', ensureAuthenticated,function(req, res, next) {
 
 });
 
-app.get('/api/events/:id',ensureAuthenticated, function(req, res, next) { //Get by destination, date, time
+app.get('/api/events/:id', function(req, res, next) { //Get by destination, date, time
   Event.findById(req.params.id, function(err, event) {
     if (err) return next(err);
     res.send(event);
   });
 });
 
-app.post('/api/events',ensureAuthenticated, function (req, res, next) {
+app.post('/api/events', function (req, res, next) {
   var event = new Event();    // create a new instance of the Event model
+  event.Name = req.body.Name;
+  event.phoneNum = req.body.phoneNum;
+  event.userEmail = req.body.userEmail;
     event.eventName = req.body.eventName;  // set the event name (comes from the request)
-                                //configure angular to choose from dropdown menu
+  event.uniName = req.body.uniName;                      //configure angular to choose from dropdown menu
     event.save(function(err) {
       if (err)
         res.send(err);
@@ -177,7 +182,7 @@ app.post('/api/events',ensureAuthenticated, function (req, res, next) {
 
 });
 
-app.delete('/api/events/:id', ensureAuthenticated,function(req, res) {
+app.delete('/api/events/:id',function(req, res) {
     Event.remove({
       _id: req.params.id
     }, function(err, event) {
@@ -296,7 +301,8 @@ app.post('/auth/signup', function(req, res) {
       displayName: req.body.displayName,
       email: req.body.email,
       phoneNum:req.body.phoneNum,
-      password: req.body.password
+      password: req.body.password,
+      uniName: req.body.uniName
     });
     user.save(function() {
       res.send({ token: createJWT(user) });

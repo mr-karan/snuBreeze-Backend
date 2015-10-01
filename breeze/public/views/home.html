@@ -1,4 +1,12 @@
-<div class="container-fluid"  ng-if="isAuthenticated()">
+<div class="container-fluid"  ng-if="bool">
+
+        <!-- HEADER AND COUNT -->
+        <div class="jumbotron text-center visible-desktop hidden-phone" >
+          <p> Hi there! Please login or signup! </p>
+             <img class="img-responsive" width="50%" src="logo.png"> 
+        </div>
+</div>
+<div class="container-fluid"  ng-show="isAuthenticated()">
 
         <!-- HEADER AND COUNT -->
         <div class="jumbotron text-center visible-desktop hidden-phone" >
@@ -14,7 +22,7 @@
                 <small>If you dont see your name above,try reloading.</p>
               </div>
               <div class="col-md-6 col-md-offset-3">
-              <div class="panel panel-default"  ng-repeat="registration in filteredRegistrations=( registrations )" ng-show="username.length > 0">
+              <div class="panel panel-default"  ng-repeat="registration in filteredRegistrations=( registrations | filter:{displayName:username})" ng-show="username.length > 0">
                 <div class="bookingcard">
                 <div class="panel-body ">
                   <div ng-show="username.length > 0">
@@ -28,6 +36,7 @@
                         <button class="btn btn-xs btn-danger" ng-click="deleteRegistration(registration._id)">Delete</button>
 
                       </div>
+                    </div>
                     </div>
                     <div ng-if="filteredRegistrations.length == 0">
                       <h4>No registrations found. Use the <a href="/#/events" class="btn btn-warning btn-xs" >Register for events</a> option to Register!</h4>
